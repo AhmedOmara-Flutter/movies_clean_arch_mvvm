@@ -7,11 +7,17 @@ class MoviesHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          MoviesCubit(NowPlayingUseCase(RepositoryImpl(RemoteDataSourceImpl())))
-            ..getNowPlayingMovies(),
+          MoviesCubit(
+              instance<NowPlayingUseCase>(),
+              instance<UpComingUseCase>(),
+              instance<TopRatedUseCase>(),
+            )
+            ..getNowPlayingMovies()
+            ..getUpComingMovies()
+            ..getTopRatedMovies(),
       child: BlocConsumer<MoviesCubit, MoviesState>(
         listener: (context, state) {
-          if (state is NowPlayingMoviesLoadedError) {
+          if (state is MoviesLoadedError) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
@@ -20,11 +26,11 @@ class MoviesHomeView extends StatelessWidget {
         builder: (context, state) {
           final cubit = MoviesCubit.get(context);
 
-          if (state is NowPlayingMoviesLoadedLoading) {
+          if (state is MoviesLoadedLoading) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (state is NowPlayingMoviesLoadedError) {
+          if (state is MoviesLoadedError) {
             return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -50,9 +56,9 @@ class MoviesHomeView extends StatelessWidget {
               children: [
                 CustomSliderCarousal(movie: cubit.nowPlayingMovies),
                 CustomHorizontalText(text: 'Now Playing'),
-                CustomListView(movie: cubit.nowPlayingMovies),
+                CustomListView(movie: cubit.upComingMovies),
                 CustomHorizontalText(text: 'Top Rated'),
-                CustomListView(movie: cubit.nowPlayingMovies),
+                CustomListView(movie: cubit.topRatedMovies),
                 SizedBox(width: FontSizeManager.s15),
               ],
             ),

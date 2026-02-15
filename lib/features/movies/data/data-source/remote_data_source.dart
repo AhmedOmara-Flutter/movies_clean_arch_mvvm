@@ -1,7 +1,7 @@
 import 'package:movies_clean_arch_mvvm/core/app_imports.dart';
 
 abstract class RemoteDataSource {
-  Future<List<MovieResponse>> getPopularMovies();
+  Future<List<MovieResponse>> getUpComingMovies();
 
   Future<List<MovieResponse>> getNowPlayingMovies();
 
@@ -17,12 +17,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         'https://api.themoviedb.org/3/movie/now_playing?api_key=a497f504b6673dad3325dbad736632a0',
       );
       if (response.statusCode == 200) {
-        print(response.data);
         return List<MovieResponse>.from(
           response.data['results'].map((x) => MovieResponse.fromJson(x)),
         ).toList();
       } else {
-        print(response.statusCode);
         return throw Exception('Failed to load data');
       }
     } on Exception catch (e) {
@@ -32,19 +30,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<List<MovieResponse>> getPopularMovies() async {
+  Future<List<MovieResponse>> getUpComingMovies() async {
     Dio dio = Dio();
     try {
       final response = await dio.get(
-        'https://api.themoviedb.org/3/movie/popular?api_key=a497f504b6673dad3325dbad736632a0',
+        'https://api.themoviedb.org/3/movie/upcoming?api_key=a497f504b6673dad3325dbad736632a0',
       );
       if (response.statusCode == 200) {
-        print(response.data);
         return List<MovieResponse>.from(
           response.data['results'].map((x) => MovieResponse.fromJson(x)),
         ).toList();
       } else {
-        print(response.statusCode);
         return throw Exception('Failed to load data');
       }
     } on Exception catch (e) {
@@ -66,7 +62,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
             .map((element) => MovieResponse.fromJson(element))
             .toList();
       } else {
-        print(response.statusCode);
         return throw Exception('Failed to load data');
       }
     } on Exception catch (e) {
