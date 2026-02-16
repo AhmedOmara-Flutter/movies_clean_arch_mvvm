@@ -11,7 +11,9 @@ part of 'app_api.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
 
 class _AppServicesClint implements AppServicesClint {
-  _AppServicesClint(this._dio, {this.baseUrl, this.errorLogger});
+  _AppServicesClint(this._dio, {this.baseUrl, this.errorLogger}) {
+    baseUrl ??= 'https://api.themoviedb.org/3';
+  }
 
   final Dio _dio;
 
@@ -20,27 +22,25 @@ class _AppServicesClint implements AppServicesClint {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<MovieResponse>> getPopularMovies() async {
+  Future<MovieResponse> getPopularMovies(String apiKey) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'api_key': apiKey};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<MovieResponse>>(
+    final _options = _setStreamType<MovieResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/popular',
+            '/movie/popular',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<MovieResponse> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late MovieResponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => MovieResponse.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = MovieResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

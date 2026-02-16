@@ -7,7 +7,7 @@ class NowPlayingUseCase extends BaseUseCase {
   NowPlayingUseCase(this._repository);
 
   @override
-  Future<Either<Failure,List<Movie>>> execute() async {
+  Future<Either<Failure,Movie>> execute() async {
     return await _repository.getNowPlayingMovies();
   }
 }

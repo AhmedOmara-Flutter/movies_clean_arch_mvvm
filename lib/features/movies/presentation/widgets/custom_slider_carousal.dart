@@ -1,14 +1,14 @@
 import 'package:movies_clean_arch_mvvm/core/app_imports.dart';
 
 class CustomSliderCarousal extends StatelessWidget {
-  const CustomSliderCarousal({super.key, required this.movie});
+  final Movie movie;
+  const CustomSliderCarousal(this. movie, {super.key,});
 
-  final List<Movie> movie;
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-      items: movie.map((movie) => _buildCarouselImage(movie)).toList(),
+      items: movie.results!.map((movie) => _buildCarouselImage(movie)).toList(),
       options: CarouselOptions(
         height: FontSizeManager.s500,
         enlargeCenterPage: false,
@@ -27,11 +27,11 @@ class CustomSliderCarousal extends StatelessWidget {
     );
   }
 
-  Widget _buildCarouselImage(Movie movie) {
+  Widget _buildCarouselImage(Result movie) {
     return Stack(
       children: [
         Image.network(
-          '${Constants.imageUrl}${movie.poster}',
+          '${Constants.imageUrl}${movie.posterPath}',
           fit: BoxFit.cover,
           width: double.infinity,
         ),

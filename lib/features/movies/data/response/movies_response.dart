@@ -1,37 +1,59 @@
-import 'package:movies_clean_arch_mvvm/core/app_imports.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class MovieResponse extends Movie {
-  const MovieResponse({
-    required super.title,
-    required super.year,
-    required super.poster,
-    required super.id,
-    required super.overview,
-    required super.voteAverage,
-    required super.genreIds,
-  });
+part 'movies_response.g.dart';
 
-  factory MovieResponse.fromJson(Map<String, dynamic> json) {
-    return MovieResponse(
-      title: json['title']??'',
-      year: json['year']??'',
-      poster: json['poster_path']??'',
-      id: json['id']??0,
-      overview: json['overview']??'',
-      voteAverage: json['vote_average']??'',
-      genreIds: List<int>.from(json['genre_ids'].map((x) => x)??[]),
-    );
-  }
+@JsonSerializable()
+class ResultsResponse {
+  @JsonKey(name: 'genre_ids')
+  List<int>? genreIds;
+  @JsonKey(name: 'id')
+  int? id;
+  @JsonKey(name: 'overview')
+  String? overview;
+  @JsonKey(name: 'poster_path')
+  String? posterPath;
+  @JsonKey(name: 'release_date')
+  String? releaseDate;
+  @JsonKey(name: 'title')
+  String? title;
+  @JsonKey(name: 'vote_average')
+  double? voteAverage;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'year': year,
-      'poster_path': poster,
-      'id': id,
-      'overview': overview,
-      'vote_average': voteAverage,
-      'genre_ids': genreIds,
-    };
-  }
+  ResultsResponse({
+    this.genreIds,
+    this.id,
+    this.overview,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.voteAverage,
+    });
+
+  factory ResultsResponse.fromJson(Map<String, dynamic> json)=> _$ResultsResponseFromJson(json);
+
+
+  Map<String, dynamic> toJson() => _$ResultsResponseToJson(this);
+
+
+}
+
+@JsonSerializable()
+class MovieResponse {
+  @JsonKey(name: 'page')
+  int? page;
+  @JsonKey(name: 'results')
+  List<ResultsResponse>? resultsResponse;
+  @JsonKey(name: 'total_pages')
+  int? totalPages;
+  @JsonKey(name: 'total_results')
+  int? totalResults;
+
+  MovieResponse({this.page, this.resultsResponse, this.totalPages, this.totalResults});
+
+  factory MovieResponse.fromJson(Map<String, dynamic> json)=>
+      _$MovieResponseFromJson(json);
+
+
+  Map<String, dynamic> toJson() => _$MovieResponseToJson(this);
+
 }

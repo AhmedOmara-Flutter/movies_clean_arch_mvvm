@@ -5,4 +5,5 @@ class Constants {
   static const cacheNowPlaying = 'CacheNowPlaying';
   static const cacheUpComing = 'CacheUpComing';
   static const cacheTopRated = 'CacheTopRated';
+  static const baseUrl='https://api.themoviedb.org/3';
 }

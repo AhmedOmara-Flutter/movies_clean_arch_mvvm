@@ -1,32 +1,25 @@
-import 'package:movies_clean_arch_mvvm/core/app_imports.dart';
+class Result {
+  List<int> genreIds;
+  int id;
+  String overview;
+  String posterPath;
+  String releaseDate;
+  String title;
+  double voteAverage;
 
-class Movie extends Equatable {
-  final int id;
-  final String title;
-  final String year;
-  final String poster;
-  final List<int> genreIds;
-  final String overview;
-  final double voteAverage;
+  Result(this.genreIds, this.id, this.overview, this.posterPath,
+      this.releaseDate, this.title, this.voteAverage);
 
-  const Movie({
-    required this.title,
-    required this.year,
-    required this.poster,
-    required this.id,
-    required this.overview,
-    required this.voteAverage,
-    required this.genreIds,
-  });
+}
 
-  @override
-  List<Object?> get props => [
-    title,
-    year,
-    poster,
-    id,
-    overview,
-    voteAverage,
-    genreIds,
-  ];
+
+class Movie {
+  int page;
+  List<Result>? results;
+  int totalPages;
+  int totalResults;
+
+  Movie(this.page, this.results, this.totalPages, this.totalResults);
+
+
 }

@@ -9,12 +9,13 @@ class MoviesHomeView extends StatelessWidget {
       create: (context) =>
           MoviesCubit(
               instance<NowPlayingUseCase>(),
-              instance<UpComingUseCase>(),
-              instance<TopRatedUseCase>(),
+              // instance<UpComingUseCase>(),
+              // instance<TopRatedUseCase>(),
             )
             ..getNowPlayingMovies()
-            ..getUpComingMovies()
-            ..getTopRatedMovies(),
+            // ..getUpComingMovies()
+            // ..getTopRatedMovies()
+      ,
       child: BlocConsumer<MoviesCubit, MoviesState>(
         listener: (context, state) {
           if (state is MoviesLoadedError) {
@@ -54,12 +55,12 @@ class MoviesHomeView extends StatelessWidget {
               spacing: FontSizeManager.s10,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomSliderCarousal(movie: cubit.nowPlayingMovies),
-                CustomHorizontalText(text: 'Now Playing'),
-                CustomListView(movie: cubit.upComingMovies),
-                CustomHorizontalText(text: 'Top Rated'),
-                CustomListView(movie: cubit.topRatedMovies),
-                SizedBox(width: FontSizeManager.s15),
+                CustomSliderCarousal(cubit.nowPlayingMovies!),
+                // CustomHorizontalText(text: 'Now Playing'),
+                // CustomListView(movie: cubit.upComingMovies),
+                // CustomHorizontalText(text: 'Top Rated'),
+                // CustomListView(movie: cubit.topRatedMovies),
+                // SizedBox(width: FontSizeManager.s15),
               ],
             ),
           );
